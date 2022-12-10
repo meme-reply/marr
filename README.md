@@ -1,5 +1,5 @@
 # Memereply Sad Pepe
-Dynamically handle exceptions andrender a structured JSON response to client applications
+Dynamically handle exceptions and render a structured JSON response to client applications
 
 ![sad pepe on the floor](https://www.meme-arsenal.com/memes/1adf62bd401ea536f9e6d4df9097201b.jpg)
 ![pepe the enginer](https://images-cdn.9gag.com/photo/ajq1ePg_700b.jpg)
