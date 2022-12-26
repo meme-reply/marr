@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Memereply"]
   spec.email         = ["engineering@memereply.io"]
 
-  spec.summary       = "Dynamically handle exceptions andrender a structured JSON response to client applications"
-  spec.description   = "Dynamically handle exceptions andrender a structured JSON response to client applications"
+  spec.summary       = "Dynamically handle exceptions and render a structured JSON response to client applications"
+  spec.description   = "Dynamically handle exceptions and render a structured JSON response to client applications"
   spec.homepage      = "https://github.com/meme-reply"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
