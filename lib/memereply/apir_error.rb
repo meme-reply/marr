@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'json'
 require 'securerandom'
 
 require_relative "memereply_api_error_engine/version"
@@ -21,22 +22,26 @@ module Memereply
       set_resource
     end
 
-    def sub_errors
+    # Error name => code
+    # Status => status
+    # Subcodes => title
+    # message => detail
+    def object_errors
       return [] unless @object.present?
       return [] unless @object&.errors&.full_messages.present?
 
       attributes = @object.errors.details.map(&:first)
-      @sub_errors = []
+      @object_errors = []
 
       attributes.each do |attrb|
         @object.errors.full_messages_for(attrb).each do |msg|
           error = { pointer: attrb.to_s }
           error_with_message = error.merge(detail: msg)
 
-          @sub_errors << error_with_message
+          @object_errors << error_with_message
         end
       end
-      @sub_errors
+      @object_errors
     end
 
     def status(status: 422)
@@ -54,7 +59,7 @@ module Memereply
     end
 
     def subcode
-      retunr '' unless subcodes[@subcode].present?
+      return '' unless subcodes[@subcode].present?
 
       @subcode.to_s.camelcase
     end
@@ -74,14 +79,31 @@ module Memereply
     end
 
     def render
+      if Memereply::Api::Error.configuration.custom_render
+        custom_render
+      else
+        default_render.to_json
+      end
+    end
+
+    def custom_render
+      if Memereply::Api::Error.configuration.custom_render
+        raise NotImplementedError, 'Message must be implemented. Add Error message method.'
+      else
+        nil
+      end
+    end
+
+    def default_render
       {
         errors: {
-          trace_id: trace_id,
-          type: type,
-          message: message,
-          error_subcode: subcode,
-          detail: detail,
-          sub_errors: sub_errors
+          code: type,
+          title: subcode,
+          detail: message,
+          meta: {
+            object_errors: object_errors,
+            trace_id: trace_id,
+          }
         }.merge(add_error_context)
       }.merge(add_context)
     end

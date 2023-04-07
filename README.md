@@ -1,4 +1,5 @@
 # Memereply Sad Pepe
+
 Dynamically handle exceptions and render a structured JSON response to client applications
 
 ![sad pepe on the floor](https://www.meme-arsenal.com/memes/1adf62bd401ea536f9e6d4df9097201b.jpg)
@@ -24,39 +25,45 @@ Or install it yourself as:
 
 ```json
 {
-    "error": {
-        "trace_id": "6CA01AF9E592595F",
-        "type": "GroupError",
-        "message": "There was an issue processing the Group",
-        "error_subcode": "GroupInvalid",
-        "detail": "The Group can not be saved. Invalid and missing data.",
-        "sub_errors": [
-            {
-                "pointer": "user",
-                "detail": "User can't be blank"
-            },
-            {
-                "pointer": "name",
-                "detail": "Name can't be blank"
-            }
-        ]
+  "errors": {
+    "code": "GroupError",
+    "title": "GroupInvalid",
+    "detail": "The Group can not be saved. Invalid or missing data.",
+    "meta": {
+      "object_errors": [
+        {
+          "pointer": "owner",
+          "detail": "Owner can't be blank"
+        },
+        {
+          "pointer": "name",
+          "detail": "Name can't be blank"
+        }
+      ],
+      "trace_id": "6CA01AF9E592595F"
     }
+  }
 }
 ```
 
 ## Usage
+
 There is a method automatically created for each each class that inherits from Memereply::ApiError. The method is preprended with 'raise'.
+
 ```ruby
   raise_meme_error
 ```
 
 You can also pass in options to your method for a more robust response:
+
 ```ruby
   raise_meme_error(controller: self, subcode: :meme_invalid, object: @meme)
 ```
 
 ## Setup
+
 Configure the gem. For the gem to recognize the descendant classes you have to provide the name space the errors are under.
+
 ```ruby
 Memereply::Api::Error.configure do |config|
   config.namespaces = ['Api::V1::Errors']
@@ -64,7 +71,7 @@ Memereply::Api::Error.configure do |config|
 end
 ```
 
-Create a new Error that inherits from the ApiError class. The class needs to be under the configured name space. NOTE: The ``message`` method must be implemented.
+Create a new Error that inherits from the ApiError class. The class needs to be under the configured name space. NOTE: The `message` method must be implemented.
 
 ```ruby
 module Api
@@ -78,23 +85,36 @@ module Api
         def subcodes
           super({
             meme_invalid: 'This meme is invalid.',
-            meme_too_large: 'This meme is too damn big nephew', 
+            meme_too_large: 'This meme is too damn big nephew',
           })
         end
       end
-    end 
-  end 
-end 
+    end
+  end
+end
 ```
 
 Include the ErrorEngine module in your base api class
+
 ```ruby
 include ::Memereply::Api::ErrorEngine
 ```
 
 Next rescue all your api errors. This method could be in your base api class.
+
 ```ruby
 rescue_from 'Memereply::ApiError' do |exception|
-  render json: exception.render, status: exception.status
+  render exception.render, status: exception.status
+end
+```
+
+If you are custom rendering using a gem like Jbuilder you can do something like this:
+
+```ruby
+# you would overide the custom_render in your class to return the file path you want to use
+#=> 'api/internal/v1/errors/error'
+rescue_from 'Memereply::ApiError' do |error|
+  @error = error
+  render @error.render, status: @error.status
 end
 ```
