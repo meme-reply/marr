@@ -1,4 +1,4 @@
-# Marr (Memereply Api Rescue Ressponse)
+# Marr (Memereply Api Rescue Response)
 
 Dynamically handle exceptions and render a structured JSON response to client applications.
 Formerly (Memereply sad pepe)
