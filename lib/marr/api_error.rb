@@ -96,8 +96,8 @@ module Marr
       {
         errors: {
           code: type,
-          title: subcode,
-          detail: message,
+          title: message,
+          detail: subcode,
           meta: {
             object_errors: object_errors,
             trace_id: trace_id,
