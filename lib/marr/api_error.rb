@@ -20,10 +20,6 @@ module Marr
       set_resource
     end
 
-    # Error name => code
-    # Status => status
-    # Subcodes => title
-    # message => detail
     def object_errors
       return [] unless @object.present?
       return [] unless @object&.errors&.full_messages.present?
