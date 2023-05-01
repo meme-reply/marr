@@ -3,13 +3,13 @@
 require_relative "lib/memereply/api/error/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "memereply_sad_pepe"
+  spec.name          = "marr" # Memereply Api Rescue Response aka marr
   spec.version       = Memereply::Api::Error::VERSION
   spec.authors       = ["Memereply", "Micah Bowie"]
   spec.email         = ["engineering@memereply.io"]
 
-  spec.summary       = "Dynamically handle exceptions and render a structured JSON response to client applications"
-  spec.description   = "Dynamically handle exceptions and render a structured JSON response to client applications"
+  spec.summary       = "Dynamically rescue errors and render a structured JSON response to client applications"
+  spec.description   = "Dynamically rescue errors and render a structured JSON response to client applications"
   spec.homepage      = "https://github.com/meme-reply/sad_pepe"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 

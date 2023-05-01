@@ -2,9 +2,7 @@
 require 'json'
 require 'securerandom'
 
-require_relative "memereply_api_error_engine/version"
-
-module Memereply
+module Marr
   class ApiError < StandardError
     attr_accessor :resource, :object, :request, :response, :add_context, :add_error_context
 
@@ -79,7 +77,7 @@ module Memereply
     end
 
     def render
-      if Memereply::Api::Error.configuration.custom_render
+      if Marr::Api::Error.configuration.custom_render
         custom_render
       else
         default_render.to_json
@@ -87,7 +85,7 @@ module Memereply
     end
 
     def custom_render
-      if Memereply::Api::Error.configuration.custom_render
+      if Marr::Api::Error.configuration.custom_render
         raise NotImplementedError, 'Message must be implemented. Add Error message method.'
       else
         nil
@@ -111,7 +109,7 @@ module Memereply
     private
 
     def trace_id_length
-      Memereply::Api::Error.configuration.trace_id_length / 2
+      Marr::Api::Error.configuration.trace_id_length / 2
     end
 
     def set_resource

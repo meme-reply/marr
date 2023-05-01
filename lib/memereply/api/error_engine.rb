@@ -1,10 +1,10 @@
 require 'active_support'
-require 'memereply/api/error'
+require 'marr/api/error'
 
-module Memereply
+module Marr
   module Api
     module ErrorEngine
-      ::Memereply::Api::Error.all_errors.each do |error|
+      ::Marr::Api::Error.all_errors.each do |error|
         name = error[:name]
         namespace = error[:namespace]
 

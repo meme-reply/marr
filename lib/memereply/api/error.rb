@@ -1,8 +1,8 @@
-require 'memereply/api/error/version'
-require 'memereply/configuration'
-require 'memereply/api_error'
+require 'marr/api/error/version'
+require 'marr/configuration'
+require 'marr/api_error'
 
-module Memereply
+module Marr
   module Api
     module Error
       class << self 
@@ -12,7 +12,7 @@ module Memereply
 
         def configure
           yield(configuration)
-          load 'memereply/api/error_engine'
+          load 'marr/api/error_engine'
         end
 
         def all_errors
