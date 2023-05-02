@@ -1,10 +1,9 @@
 require 'active_support'
-require 'marr/api/error'
 
 module Marr
   module Api
     module ErrorEngine
-      ::Marr::Api::Error.all_errors.each do |error|
+      ::Marr.all_errors.each do |error|
         name = error[:name]
         namespace = error[:namespace]
 

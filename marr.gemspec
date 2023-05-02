@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "lib/marr/api/error/version"
+require_relative "lib/marr/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "marr" # Memereply Api Rescue Response aka marr
-  spec.version       = Marr::Api::Error::VERSION
+  spec.version       = Marr::VERSION
   spec.authors       = ["Memereply", "Micah Bowie"]
   spec.email         = ["engineering@memereply.io"]
 

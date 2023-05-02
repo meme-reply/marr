@@ -9,7 +9,7 @@ module Marr
     def initialize(attributes={})
       @controller = attributes[:controller]
       @object = attributes[:object]
-      @resource = attributes[:resource] || 'Resource'
+      @resource = attributes[:resource] || 'Resource'.freeze
       @subcode = attributes[:subcode]
       @override_detail = attributes[:override_detail]
       @override_status = attributes[:override_status]
@@ -38,8 +38,9 @@ module Marr
       @object_errors
     end
 
-    def status(status: 422)
-      @override_status&.integer? ? @override_status : status
+    def status
+      default_status = '422'
+      @override_status&.integer? ? @override_status.to_s : default_status
     end
 
     def message
@@ -58,6 +59,10 @@ module Marr
       @subcode.to_s.camelcase
     end
 
+    def subcode_detail
+      subcodes[@subcode].present? ? subcodes[@subcode] : ''
+    end
+
     def detail
       return '' unless @override_detail.present? || subcodes[@subcode].present?
 
@@ -73,7 +78,7 @@ module Marr
     end
 
     def render
-      if Marr::Api::Error.configuration.custom_render
+      if Marr.configuration.custom_render
         custom_render
       else
         default_render.to_json
@@ -81,7 +86,7 @@ module Marr
     end
 
     def custom_render
-      if Marr::Api::Error.configuration.custom_render
+      if Marr.configuration.custom_render
         raise NotImplementedError, 'Message must be implemented. Add Error message method.'
       else
         nil
@@ -91,9 +96,11 @@ module Marr
     def default_render
       {
         errors: {
+          id: trace_id,
+          status: status,
           code: type,
           title: message,
-          detail: subcode,
+          detail: subcode_detail,
           meta: {
             object_errors: object_errors,
             trace_id: trace_id,
@@ -105,7 +112,7 @@ module Marr
     private
 
     def trace_id_length
-      Marr::Api::Error.configuration.trace_id_length / 2
+      Marr.configuration.trace_id_length / 2
     end
 
     def set_resource
