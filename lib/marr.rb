@@ -20,7 +20,7 @@ module Marr
 
     def configure
       yield(configuration)
-      load('lib/marr/api/error_engine.rb')
+      load('./lib/marr/api/error_engine.rb')
     end
 
     def all_errors

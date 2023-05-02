@@ -11,6 +11,9 @@ Gem::Specification.new do |spec|
   spec.summary       = "Dynamically rescue errors and render a structured JSON response to client applications"
   spec.description   = "Dynamically rescue errors and render a structured JSON response to client applications"
   spec.homepage      = "https://github.com/meme-reply/marr"
+
+  spec.files         = Dir["{lib}/**/*", "LICENSE.txt", "README.md"]
+  spec.require_paths = ["lib"]
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
 
   spec.metadata["homepage_uri"] = spec.homepage
